@@ -6,8 +6,8 @@ class User
   field :lastname,  type: String
   field :email,     type: String
   field :friends,   type: Array
+  field :skills,    type: Array
 
-  has_many :skills
   embeds_many :employments
   # You can define indexes on documents using the index macro:
   # index :field <, :unique => true>
