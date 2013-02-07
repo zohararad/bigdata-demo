@@ -39,7 +39,11 @@ namespace :db do
         lastname: Forgery(:name).last_name,
         email: Forgery(:email).address,
         friends: [],
-        skills: skills
+        skills: skills,
+        address: {
+          city: Forgery(:address).city,
+          country: Forgery(:address).country,
+        }
       })
       user.employments.push employment
 
