@@ -16,6 +16,8 @@ namespace :db do
       'AWS'
   ]
 
+  POSITIONS = ['Developer', 'Team Leader', 'Manager', 'Engineer', 'Q.A']
+
   task :seed_users => :environment do
 
     1000.times do
@@ -30,7 +32,7 @@ namespace :db do
           name: Forgery(:name).company_name,
           started_at: Date.today - [1,2,3,4].sample.year,
           finished_at: Date.today,
-          position: ['Developer', 'Team Leader', 'Manager', 'Engineer', 'Q.A'].sample,
+          position: POSITIONS.sample,
           job_description: Forgery(:internet).email_subject
       })
 
@@ -65,4 +67,31 @@ namespace :db do
       user.update_attributes friends: friends
     end
   end
+
+  task :seed_positions => :environment do
+    1000.times do
+      skills = []
+      3.times do
+        skills << SKILLS.sample
+      end
+      skills.uniq!
+      d = (0..6).to_a.sample.days.ago
+      position = Position.new({
+                                  company: Forgery(:name).company_name,
+                                  position: POSITIONS.sample,
+                                  location: Forgery(:address).city,
+                                  skills: skills,
+                                  created_at: d.to_i
+                              })
+      position.save
+    end
+  end
+end
+
+namespace :avro do
+
+  task :seed_positions => :environment do
+    AvroLogger::Position.log Position.all
+  end
+
 end
