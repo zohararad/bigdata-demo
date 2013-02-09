@@ -100,7 +100,7 @@ namespace :avro do
       d = (0..6).to_a.sample.days.ago
       search = {
         "keyword" => SKILLS.sample,
-        "ts" => d.to_i
+        "timestamp" => d.to_i
       }
       searches << search
     end

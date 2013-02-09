@@ -10,7 +10,7 @@ module AvroLogger
         "name": "skill",
         "fields" : [
           {"name": "keyword", "type": "string"},
-          {"name": "ts", "type": "int"}
+          {"name": "timestamp", "type": "int"}
         ]
       }
     JSON
