@@ -94,4 +94,17 @@ namespace :avro do
     AvroLogger::Position.log Position.all
   end
 
+  task :seed_skill_search => :environment do
+    searches = []
+    1000.times do
+      d = (0..6).to_a.sample.days.ago
+      search = {
+        "keyword" => SKILLS.sample,
+        "ts" => d.to_i
+      }
+      searches << search
+    end
+    AvroLogger::Skills.log searches
+  end
+
 end
