@@ -13,14 +13,8 @@ module AvroLogger
             {"name": "company", "type": "string"},
             {"name": "position", "type": "string"},
             {"name": "location", "type": "string"},
-            {"name": "created_at", "type": "int"},
-            {
-              "name": "skills",
-              "type": {
-                "type": "array",
-                "items": "string"
-              }
-            }
+            {"name": "skill", "type": "string"},
+            {"name": "created_at", "type": "int"}
           ]
         }
       ]
@@ -35,7 +29,13 @@ module AvroLogger
         file = File.open(File.join(Padrino.root,'log','positions.avr'), 'wb')
         dw = Avro::DataFile::Writer.new(file, writer, schema)
         positions.each do |position|
-          dw << position.attributes
+          h = position.attributes
+          skills = h.delete "skills"
+          skills.each do |skill|
+            o = h.dup
+            o['skill'] = skill
+            dw << o
+          end
         end
         dw.close
       end
