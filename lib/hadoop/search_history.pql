@@ -11,7 +11,7 @@ define MongoStorage com.mongodb.hadoop.pig.MongoStorage();
 
 register 'udfs.rb' using jruby as udfs;
 
-raw_searches = load '/Users/zohar/workspace/linkedin-clone/log/skills.avr' using AvroStorage();
+raw_searches = load '/Users/zohar/workspace/bigdata-demo/log/skills.avr' using AvroStorage();
 
 hourly_keywords = FOREACH raw_searches GENERATE keyword AS skill, udfs.hour(timestamp) AS hour;
 

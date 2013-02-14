@@ -4,8 +4,8 @@ register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
 
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
 
-published_skills = load '/Users/zohar/workspace/linkedin-clone/log/positions.avr' using AvroStorage();
-searched_skills = load '/Users/zohar/workspace/linkedin-clone/log/skills.avr' using AvroStorage();
+published_skills = load '/Users/zohar/workspace/bigdata-demo/log/positions.avr' using AvroStorage();
+searched_skills = load '/Users/zohar/workspace/bigdata-demo/log/skills.avr' using AvroStorage();
 
 grouped_published_skills = GROUP published_skills by skill;
 grouped_searched_skills = GROUP searched_skills by keyword;

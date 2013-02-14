@@ -18,7 +18,7 @@ TBLPROPERTIES ('avro.schema.literal'='{
   ]
 }');
 
-LOAD DATA LOCAL INPATH '/Users/zohar/workspace/linkedin-clone/log/positions.avr'
+LOAD DATA LOCAL INPATH '/Users/zohar/workspace/bigdata-demo/log/positions.avr'
 OVERWRITE INTO TABLE published_skills;
 
 CREATE TABLE IF NOT EXISTS searched_skills
@@ -36,7 +36,7 @@ TBLPROPERTIES ('avro.schema.literal'='{
   ]
 }');
 
-LOAD DATA LOCAL INPATH '/Users/zohar/workspace/linkedin-clone/log/skills.avr'
+LOAD DATA LOCAL INPATH '/Users/zohar/workspace/bigdata-demo/log/skills.avr'
 OVERWRITE INTO TABLE searched_skills;
 
 CREATE TABLE IF NOT EXISTS published_skills_popularity (
