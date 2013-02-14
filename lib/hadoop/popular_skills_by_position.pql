@@ -1,0 +1,26 @@
+register /usr/local/Cellar/pig/0.10.0/lib/avro-1.5.3.jar;
+register /usr/local/Cellar/pig/0.10.0/lib/json-simple-1.1.jar;
+register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
+
+define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
+define MongoStorage com.mongodb.hadoop.pig.MongoStorage();
+
+register 'udfs.rb' using jruby as udfs;
+
+published_skills = load '/Users/zohar/workspace/linkedin-clone/log/positions.avr' using AvroStorage();
+searched_skills = load '/Users/zohar/workspace/linkedin-clone/log/skills.avr' using AvroStorage();
+
+grouped_published_skills = GROUP published_skills by skill;
+grouped_searched_skills = GROUP searched_skills by keyword;
+
+published_skills_popularity = FOREACH grouped_published_skills
+GENERATE group AS skill, COUNT(published_skills) AS c1;
+
+searched_skills_popularity = FOREACH grouped_searched_skills
+GENERATE group AS skill, COUNT(searched_skills) AS c2;
+
+joined_skills_popularity = JOIN published_skills_popularity BY skill LEFT OUTER, searched_skills_popularity BY skill;
+
+aggregated_skills_popularity = FOREACH joined_skills_popularity GENERATE $0 AS skill, $1 AS position_popularity, $3 AS search_popularity;
+
+DUMP aggregated_skills_popularity;
