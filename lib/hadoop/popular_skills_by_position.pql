@@ -3,7 +3,6 @@ register /usr/local/Cellar/pig/0.10.0/lib/json-simple-1.1.jar;
 register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
 
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
-define MongoStorage com.mongodb.hadoop.pig.MongoStorage();
 
 published_skills = load '/Users/zohar/workspace/linkedin-clone/log/positions.avr' using AvroStorage();
 searched_skills = load '/Users/zohar/workspace/linkedin-clone/log/skills.avr' using AvroStorage();
