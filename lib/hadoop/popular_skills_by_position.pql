@@ -5,8 +5,6 @@ register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
 define MongoStorage com.mongodb.hadoop.pig.MongoStorage();
 
-register 'udfs.rb' using jruby as udfs;
-
 published_skills = load '/Users/zohar/workspace/linkedin-clone/log/positions.avr' using AvroStorage();
 searched_skills = load '/Users/zohar/workspace/linkedin-clone/log/skills.avr' using AvroStorage();
 
