@@ -1,0 +1,23 @@
+register /usr/local/Cellar/pig/0.10.0/lib/avro-1.5.3.jar;
+register /usr/local/Cellar/pig/0.10.0/lib/json-simple-1.1.jar;
+register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
+
+register /usr/local/Cellar/pig/0.10.0/lib/mongo-2.10.1.jar;
+register /usr/local/Cellar/pig/0.10.0/lib/mongo-hadoop-core-1.1.0-SNAPSHOT.jar;
+register /usr/local/Cellar/pig/0.10.0/lib/mongo-hadoop-pig-1.1.0-SNAPSHOT.jar;
+
+define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
+define MongoStorage com.mongodb.hadoop.pig.MongoStorage();
+
+register 'udfs.rb' using jruby as udfs;
+
+raw_searches = load '/Users/zohar/workspace/linkedin-clone/log/skills.avr' using AvroStorage();
+
+hourly_keywords = FOREACH raw_searches GENERATE keyword AS skill, udfs.hour(timestamp) AS hour;
+
+grouped_hourly_skills = GROUP hourly_keywords BY (hour, skill);
+
+hourly_searches = FOREACH grouped_hourly_skills GENERATE
+flatten($0) AS (timestamp:long, skill:chararray), (int)COUNT($1) as count;
+
+STORE hourly_searches INTO 'mongodb://localhost/linkedin_clone_development.hourly_searches' using MongoStorage();
