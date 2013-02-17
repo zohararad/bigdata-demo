@@ -1,10 +1,10 @@
 /** === Creating New Records ===
- db.collectionName.save(RECORD);
+ db.collectionName.insert(RECORD);
  */
 
 // Create new users
 var now = new Date();
-db.users.save({
+db.users.insert({
   firstname: 'Zohar',
   lastname: 'Arad',
   email: 'zohar@arad.com',
@@ -13,7 +13,7 @@ db.users.save({
   updated_at: now
 });
 
-db.users.save({
+db.users.insert({
   firstname: 'Yossi',
   lastname: 'Cohen',
   email: 'yossi@cohen.com',
