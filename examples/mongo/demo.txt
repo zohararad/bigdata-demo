@@ -8,6 +8,8 @@ mongo bigdata_demo_development examples/mongo/crud/delete.js
 MongoDB Advanced
 
 padrino rake db:seed_users
+padrino rake db:seed_user_friends
+padrino rake db:seed_positions
 
 mongo bigdata_demo_development examples/mongo/advanced/find_regex_begin.js
 mongo bigdata_demo_development examples/mongo/advanced/find_regex_not.js

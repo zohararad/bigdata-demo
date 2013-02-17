@@ -1,0 +1,1 @@
+db.hourly_searches.find().forEach(printjson)

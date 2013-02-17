@@ -1,23 +1,33 @@
+-- Register Pig Java Dependencies
 register /usr/local/Cellar/pig/0.10.0/lib/avro-1.5.3.jar;
 register /usr/local/Cellar/pig/0.10.0/lib/json-simple-1.1.jar;
 register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
 
+-- Define Avro Storage
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
 
+-- Load raw Avro data
 published_skills = load '/Users/zohar/workspace/bigdata-demo/log/positions.avr' using AvroStorage();
 searched_skills = load '/Users/zohar/workspace/bigdata-demo/log/skills.avr' using AvroStorage();
 
+-- Create grouped raw data bags
 grouped_published_skills = GROUP published_skills by skill;
 grouped_searched_skills = GROUP searched_skills by keyword;
 
+-- Count published skills popularity
 published_skills_popularity = FOREACH grouped_published_skills
 GENERATE group AS skill, COUNT(published_skills) AS c1;
 
+-- Count searched skills popularity
 searched_skills_popularity = FOREACH grouped_searched_skills
 GENERATE group AS skill, COUNT(searched_skills) AS c2;
 
+-- Join counts from both bags
 joined_skills_popularity = JOIN published_skills_popularity BY skill LEFT OUTER, searched_skills_popularity BY skill;
 
-aggregated_skills_popularity = FOREACH joined_skills_popularity GENERATE $0 AS skill, $1 AS position_popularity, $3 AS search_popularity;
+-- Generate aggregated results
+aggregated_skills_popularity = FOREACH joined_skills_popularity
+GENERATE $0 AS skill, $1 AS position_popularity, $3 AS search_popularity;
 
+-- Dump
 DUMP aggregated_skills_popularity;

@@ -1,23 +1,36 @@
+-- Register Pig Java Dependencies
 register /usr/local/Cellar/pig/0.10.0/lib/avro-1.5.3.jar;
 register /usr/local/Cellar/pig/0.10.0/lib/json-simple-1.1.jar;
 register /usr/local/Cellar/pig/0.10.0/piggybank.jar;
 
+-- Register MongoDB Dependencies
 register /usr/local/Cellar/pig/0.10.0/lib/mongo-2.10.1.jar;
 register /usr/local/Cellar/pig/0.10.0/lib/mongo-hadoop-core-1.1.0-SNAPSHOT.jar;
 register /usr/local/Cellar/pig/0.10.0/lib/mongo-hadoop-pig-1.1.0-SNAPSHOT.jar;
 
+-- Define Avro and MongoDB Storage facilities
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
 define MongoStorage com.mongodb.hadoop.pig.MongoStorage();
 
+-- Register UDF script
 register 'udfs.rb' using jruby as udfs;
 
+-- Load raw search data
 raw_searches = load '/Users/zohar/workspace/bigdata-demo/log/skills.avr' using AvroStorage();
 
+-- Format search timestamp to hourly timestamp
 hourly_keywords = FOREACH raw_searches GENERATE keyword AS skill, udfs.hour(timestamp) AS hour;
 
+-- Group data by hour and skill
 grouped_hourly_skills = GROUP hourly_keywords BY (hour, skill);
 
+DESCRIBE grouped_hourly_skills;
+
+-- Count skill per hour in grouped data
+-- Note relative position notation using $0 and $1
+-- Note flattening of $0 into timestamp and skill
 hourly_searches = FOREACH grouped_hourly_skills GENERATE
 flatten($0) AS (timestamp:long, skill:chararray), (int)COUNT($1) as count;
 
-STORE hourly_searches INTO 'mongodb://localhost/linkedin_clone_development.hourly_searches' using MongoStorage();
+-- Store into MongoDB
+STORE hourly_searches INTO 'mongodb://localhost/bigdata_demo_development.hourly_searches' using MongoStorage();
