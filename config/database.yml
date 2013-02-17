@@ -1,18 +1,18 @@
 development:
   sessions:
     default:
-      database: linkedin_clone_development
+      database: bigdata_demo_development
       hosts:
         - localhost:27017 
 production:
   sessions:
     default:
-      database: linkedin_clone_production
+      database: bigdata_demo_production
       hosts:
         - localhost:27017
 test:
   sessions:
     default:
-      database: linkedin_clone_test
+      database: bigdata_demo_test
       hosts:
         - localhost:27017

@@ -14,11 +14,12 @@ function reduce(key, values) {
   return {count: count, users: users};
 }
 
-// first m/r
-/*
 db.users.mapReduce(map, reduce, 'user_skills');
-
 db.user_skills.find().forEach(printjson);
+
+//db.user_skills.drop();
+
+/*
 
 // ====================== ADD MORE USERS
 
@@ -30,4 +31,3 @@ db.users.mapReduce(map, reduce, {
 
 db.user_skills.find().forEach(printjson);
  */
-//db.user_skills.drop();

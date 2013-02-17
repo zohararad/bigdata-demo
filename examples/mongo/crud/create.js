@@ -1,5 +1,8 @@
-db.users.remove({});
+/** === Creating New Records ===
+ db.collectionName.save(RECORD);
+ */
 
+// Create new users
 var now = new Date();
 db.users.save({
   firstname: 'Zohar',
@@ -19,27 +22,3 @@ db.users.save({
   updated_at: now,
   friends: []
 });
-
-var zohar = db.users.findOne({email: 'zohar@arad.com'});
-var yossi = db.users.findOne({email: 'yossi@cohen.com'});
-
-printjson(zohar);
-printjson(yossi);
-
-db.users.update({
-  _id: zohar._id
-}, {
-  $set: {
-    friends: [yossi._id]
-  }
-});
-
-db.users.update({
-  _id: yossi._id
-}, {
-  $push: {
-    friends: zohar._id
-  }
-});
-
-db.users.find({}).sort({firstname: 1}).forEach(printjson);
